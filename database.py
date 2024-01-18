@@ -1,4 +1,5 @@
 import sqlite3
+from PyQt6 import QtCore
 
 class Database:
     CATEGORY_TABLE_NAME = 'categories'
@@ -54,18 +55,42 @@ class Database:
         ''', data)
         self.connection.commit()
 
+    def execute_query(self, query, params=None):
+        if params is None:
+            params = ()
+        self.cursor.execute(query, params)
+        self.connection.commit()
+
+    def create_log_table(self):
+        query = """
+        CREATE TABLE IF NOT EXISTS log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            entry TEXT,
+            timestamp TEXT
+        );
+        """
+        self.execute_query(query)
+
+    def add_log_entry_to_database(self, entry):
+        timestamp = QtCore.QDateTime.currentDateTime().toString()
+        query = "INSERT INTO log (entry, timestamp) VALUES (?, ?);"
+        params = (entry, timestamp)
+        self.execute_query(query, params)
+
+    def load_log_from_database(self):
+        query = "SELECT entry FROM log ORDER BY timestamp DESC;"
+        self.cursor.execute(query)
+        return [entry[0] for entry in self.cursor.fetchall()]
+
+    def delete_log_entry(self, log_id):
+        query = "DELETE FROM log WHERE id = ?;"
+        self.execute_query(query, (log_id,))
+        self.connection.commit()
 
     def load_from_database(self):
         self.cursor.execute('SELECT * FROM products')
         data = self.cursor.fetchall()
         return data
-    
-    def insert_category(self, category_name):
-        self.cursor.execute(f'''
-            INSERT INTO {self.CATEGORY_TABLE_NAME} ({', '.join(self.CATEGORY_FIELDS)})
-            VALUES (?)
-        ''', (category_name,))
-        self.connection.commit()
     
     def clear_database(self):
         query = "DELETE FROM products"
@@ -73,4 +98,4 @@ class Database:
         self.connection.commit()
 
     def close_connection(self):
-        self.conn.close()
+        self.connection.close()
