@@ -1,10 +1,12 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 class SearchWindow(QtWidgets.QWidget):
+    """Сигналы для поиска товара и отмены поиска"""
     searchProductSignal = QtCore.pyqtSignal(str)
     cancelSearchSignal = QtCore.pyqtSignal()
 
     def __init__(self):
+        """Инициализация окна поиска товара"""
         super().__init__()
         self.ui = Ui_SearchWindow()
         self.ui.setupUi(self)
@@ -12,14 +14,17 @@ class SearchWindow(QtWidgets.QWidget):
         self.ui.cancelButton.clicked.connect(self.cancelSearch)
 
     def emitSearchProductSignal(self):
+        """Метод для отправки сигнала с запросом на поиск товара"""
         search_term = self.ui.searchLineEdit.text()
         self.searchProductSignal.emit(search_term)
 
     def cancelSearch(self):
+        """Метод для отправки сигнала об отмене поиска"""
         self.cancelSearchSignal.emit()
 
 class Ui_SearchWindow(object):
     def setupUi(self, SearchWin):
+        """Метод для настройки интерфейса окна поиска товара"""
         SearchWin.setObjectName("SearchWindow")
         SearchWin.resize(400, 100)
         SearchWin.setWindowTitle("Поиск")

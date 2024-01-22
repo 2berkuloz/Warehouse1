@@ -1,9 +1,11 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 class EditWindow(QtWidgets.QWidget):
+    """Класс отправляемый при редактировании продукта"""
     editProductSignal = QtCore.pyqtSignal(int, str, str, str, str, str, str)
 
     def __init__(self, row, name, category, product_id, quantity, size, dimensions, categories):
+        """Инициализация окна редактирования товара"""
         super().__init__()
         self.row = row
         self.ui = Ui_EditWindow(categories)
@@ -17,6 +19,7 @@ class EditWindow(QtWidgets.QWidget):
         self.ui.editButton.clicked.connect(self.emitEditProductSignal)
 
     def emitEditProductSignal(self):
+        """Метод для отправки сигнала при редактировании товара"""
         category = self.ui.categoryComboBox.currentText()
         name = self.ui.nameLineEdit.text()
         product_id = self.ui.idLineEdit.text()
@@ -28,10 +31,12 @@ class EditWindow(QtWidgets.QWidget):
 
 
 class Ui_EditWindow(object):
+    """Инициализация интерфейса окна редактирования товара"""
     def __init__(self, categories):
         self.categories = categories
 
     def setupUi(self, EditWindow):
+        """Метод для настройки интерфейса окна редактирования товара"""
         EditWindow.setWindowTitle("Редактировать")
         icon = QtGui.QIcon("edit3.png")
         EditWindow.setWindowIcon(icon)

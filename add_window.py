@@ -2,9 +2,11 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from database import Database
 
 class AddWindow(QtWidgets.QWidget):
+    """Класс, отправляемый при добавлении нового продукта"""
     addProductSignal = QtCore.pyqtSignal(str, str, str, str)
 
     def __init__(self, product_id, db, categories):
+        """Инициализация окна добавления товара"""
         super().__init__()
         self.product_id = product_id
         self.db = db
@@ -15,6 +17,7 @@ class AddWindow(QtWidgets.QWidget):
         self.ui.addButtonCategory.clicked.connect(self.showAddCategoryDialog)
 
     def emitAddProductSignal(self):
+        """Метод для отправки сигнала при добавлении товара"""
         category = self.ui.categoryComboBox.currentText()
         name = self.ui.nameLineEdit.text()
         quantity = self.ui.quantityLineEdit.text()
@@ -22,6 +25,7 @@ class AddWindow(QtWidgets.QWidget):
         self.close()
 
     def showAddCategoryDialog(self):
+        """Метод для отображения диалогового окна добавления новой категории"""
         new_category, ok = QtWidgets.QInputDialog.getText(self, "Добавить категорию", "Введите название категории:")
         if ok and new_category:
             self.db.insert_category(new_category)
@@ -32,9 +36,11 @@ class AddWindow(QtWidgets.QWidget):
 
 class Ui_AddWindow(object):
     def __init__(self, categories):
+        """Инициализация интерфейса окна добавления товара"""
         self.categories = categories
         
     def setupUi(self, Form):
+        """Метод для настройки интерфейса окна добавления товара"""
         Form.resize(400, 300)
         Form.setWindowTitle("Добавить товар")
         icon = QtGui.QIcon("add1.png")
