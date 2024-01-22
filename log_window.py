@@ -1,13 +1,15 @@
-from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QPushButton, QTextEdit, QWidget
+from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QTextEdit, QWidget, QApplication
+from PyQt6.QtGui import QIcon
 from database import Database
 
 class LogWindow(QMainWindow):
     def __init__(self, log_entries=None, parent=None):
         super(LogWindow, self).__init__(parent)
 
-        self.setWindowTitle('Log Window')
+        self.setWindowTitle('Журнал событий')
         self.setGeometry(100, 100, 800, 600)
-
+        icon = QIcon('log1.png')
+        self.setWindowIcon(icon)
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
 

@@ -53,21 +53,22 @@ class Ui_MainWindow(object):
 
     def setupButtons(self, MainWindow):
         """Метод настройки кнопок в главном окне"""
-        self.addButton = self.createButton(MainWindow, 'add', self.openAddWindow, 35, 30)
-        self.editButton = self.createButton(MainWindow, 'edit', self.openEditWindow, 110, 30)
-        self.deleteButton = self.createButton(MainWindow, 'delete', self.deleteRow, 175, 30)
-        self.searchButton = self.createButton(MainWindow, 'search', self.openSearchWindow, 240, 30)
-        self.actionButton = self.createButton(MainWindow, 'action', self.performAction, 305, 30)
-        self.logButton = self.createButton(MainWindow, 'log', self.openLogWindow, 370, 30)
+        self.addButton = self.createButton(MainWindow, 'add', self.openAddWindow, 35, 30, 'Добавить товар')
+        self.editButton = self.createButton(MainWindow, 'edit', self.openEditWindow, 110, 30, 'Редактировать товар')
+        self.deleteButton = self.createButton(MainWindow, 'delete', self.deleteRow, 175, 30, 'Удалить товар')
+        self.searchButton = self.createButton(MainWindow, 'search', self.openSearchWindow, 240, 30, 'Поиск товара')
+        self.actionButton = self.createButton(MainWindow, 'action', self.performAction, 305, 30, 'Действие')
+        self.logButton = self.createButton(MainWindow, 'log', self.openLogWindow, 370, 30, 'Журнал событий')
 
-    def createButton(self, parent, icon_name, slot, x, y):
-        """Метод создания кнопок с заданными параметрами"""
+    def createButton(self, parent, icon_name, slot, x, y, tooltip_text):
+        """Метод для создания кнопок с заданными параметрами"""
         button = QtWidgets.QPushButton(parent=parent)
         button.setGeometry(QtCore.QRect(x, y, 70, 70))
         button.setIcon(QtGui.QIcon(Ui_MainWindow.ICON_PATHS.get(icon_name, '')))
         button.setIconSize(QtCore.QSize(60, 60))
         button.setFlat(True)
         button.clicked.connect(slot)
+        button.setToolTip(tooltip_text)
         return button
 
     def sortByColumn(self, logicalIndex):
